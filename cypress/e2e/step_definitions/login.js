@@ -3,27 +3,33 @@ import {
   When,
   Then,
 } from "@badeball/cypress-cucumber-preprocessor";
-const loginPage = require("../../pages/LoginPage");
+const login = require("../../pages/LoginPage");
+const home = require("../../pages/HomePage")
 
-Given("A web browser is at the saucelabs login page", () => {
+Given("A web browser is at the Delicious AI Admin login page", () => {
   cy.visit("/");
 });
 
-When("A user enters the username {string}, the password {string}, and clicks on the login button", (username,password) => {
-  loginPage.submitLogin(username,password)
+When("A user opts to sign in with email, enters the email {string}, the password {string}, and clicks on the Sign In button", (email, pw) => {
+  login.signInWithEmail()
+  login.typeEmail(email)
+  login.typePassword(pw)
+  login.signInButton()
 });
 
-When("A user provides incorrect credentials, and clicks on the login button", (table) => {
-  table.hashes().forEach((row) => {
-    cy.log(row.username);
-    cy.log(row.password);
-    loginPage.submitLogin(row.username, row.password)
+Then("the {string} error message should be displayed", (error) => {
+  login.errorMessage(error)
+});
 
-  });
+Then("the page url should contain users directory", () => {
+  home.pageURL()
 });
-Then("the url will contains the inventory subdirectory", () => {
-  cy.url().should("contains", "/inventory.html");
+
+Then("the page title is correct", () => {
+  home.pageTitle()
 });
-Then("The error message {string} is displayed", (errorMessage) => {
-  loginPage.elements.errorMessage().should("have.text", errorMessage);
+
+Then("the User Management section is displayed", () => {
+  home.headerTitle()
 });
+

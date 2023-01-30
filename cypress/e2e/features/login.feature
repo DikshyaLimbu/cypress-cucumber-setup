@@ -1,22 +1,16 @@
-Feature: Login page
 
-    Feature Login page will work depending on the user credentials.
+Feature: Login to DeliciousAI Admin web app
 
-    Background:
-        Given A web browser is at the saucelabs login page
-    Scenario: Success Login
-        When A user enters the username "standard_user", the password "secret_sauce", and clicks on the login button
-        Then the url will contains the inventory subdirectory
-    Scenario: Blocked Login
-        When A user enters the username "locked_out_user", the password "secret_sauce", and clicks on the login button
-        Then The error message "Epic sadface: Sorry, this user has been locked out." is displayed
-    Scenario: Incorrect Username Login
-        When A user provides incorrect credentials, and clicks on the login button
-            | username | password     |
-            | testName | secret_sauce |
-        Then The error message "Epic sadface: Username and password do not match any user in this service" is displayed
-    Scenario: Incorrect Password Login
-        When A user provides incorrect credentials, and clicks on the login button
-            | username      | password     |
-            | standard_user | testPassword |
-        Then The error message "Epic sadface: Username and password do not match any user in this service" is displayed
+    As a user, I want to login to DAI admin app.
+
+        Scenario: Unsuccessful Login with correct email and incorrect password
+        Given A web browser is at the Delicious AI Admin login page
+        When A user opts to sign in with email, enters the email "swire-picos@test.com", the password "Swi$$", and clicks on the Sign In button
+        Then the "The email and password you entered don't match" error message should be displayed
+
+    Scenario: Successful Login
+        Given A web browser is at the Delicious AI Admin login page
+        When A user opts to sign in with email, enters the email "swire-picos@test.com", the password "Swi$reTest$", and clicks on the Sign In button
+        Then the page url should contain users directory
+        And the page title is correct
+        And the User Management section is displayed
